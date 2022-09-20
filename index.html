@@ -65,10 +65,21 @@
       }
 
       footer {
-        color: rgb(6, 182, 182);
+        color: rgb(146, 146, 146);
         position: fixed;
         bottom: 20px;
         right: 20px;
+        font-family: "Courier New", Courier, monospace;
+      }
+
+      footer a {
+        color: rgb(6, 182, 182);
+        text-decoration: none;
+        cursor: pointer;
+      }
+      footer a:hover {
+        color: rgb(234, 211, 32);
+        transition: color 0.2s ease;
       }
     </style>
     <script>
@@ -79,33 +90,6 @@
       var min = 0;
       var hour = 0;
       var selectedTime;
-      var xhttp = new XMLHttpRequest();
-
-      xhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-          var resp = JSON.parse(xhttp.responseText);
-          // console.log(resp, resp.centers)
-          var aSession = resp.centers.filter((data) =>
-            data.sessions.find((session) => session.available_capacity > 0)
-          );
-          var uSession = resp.centers.filter((data) =>
-            data.sessions.find((session) => session.available_capacity === 0)
-          );
-
-          console.log(aSession.length, uSession.length);
-          // Typical action to be performed when the document is ready:
-          // document.getElementById("demo").innerHTML = xhttp.responseText;
-        }
-      };
-
-      setInterval(() => {
-        xhttp.open(
-          "GET",
-          "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode=416103&date=03-05-2021",
-          true
-        );
-        xhttp.send();
-      }, 2 * 1000);
 
       function showNotification(message) {
         if (!("Notification" in window)) {
@@ -187,13 +171,10 @@
     </div>
     <h2 id="watch">0hr : 0m : 0s</h2>
     <footer class="footer">
-      developed with ♥ by
-      <a
-        style="text-decoration: none; cursor: pointer; color: inherit"
-        href="https://www.yashjain.xyz"
-        target="_blank"
-        >Yash Jain</a
-      >
+      &lt;/&gt; with ♥ by
+      <a href="https://www.yashjain.xyz" target="_blank">yash jain </a>
+      |
+      <a href="https://github.com/Jainysh/20-min-timer" target="_blank">src </a>
     </footer>
   </body>
 </html>
