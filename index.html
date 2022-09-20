@@ -84,6 +84,7 @@
     </style>
     <script>
       var timerRunning = false;
+      var isFullscreen = false;
       var timer;
       var time = 0;
       var sec = 0;
@@ -102,6 +103,43 @@
               var notification = new Notification(message);
             }
           });
+        }
+      }
+
+      var elem = document.documentElement;
+      function openFullscreen() {
+        var fullscreenBtn = document.getElementById("fullscreen");
+        if (!isFullscreen) {
+          if (elem.requestFullscreen) {
+            elem.requestFullscreen();
+            isFullscreen = true;
+          } else if (elem.webkitRequestFullscreen) {
+            /* Safari */
+            elem.webkitRequestFullscreen();
+            isFullscreen = true;
+          } else if (elem.msRequestFullscreen) {
+            /* IE11 */
+            elem.msRequestFullscreen();
+            isFullscreen = true;
+          }
+        } else {
+          if (document.exitFullscreen) {
+            document.exitFullscreen();
+          } else if (document.webkitExitFullscreen) {
+            /* Safari */
+            document.webkitExitFullscreen();
+          } else if (document.msExitFullscreen) {
+            /* IE11 */
+            document.msExitFullscreen();
+          }
+          isFullscreen = false;
+        }
+        if (isFullscreen) {
+          fullscreenBtn.style.backgroundColor = "red";
+          fullscreenBtn.innerText = "Exit";
+        } else {
+          fullscreenBtn.style.backgroundColor = "transparent";
+          fullscreenBtn.innerText = "Fullscreen";
         }
       }
 
@@ -164,6 +202,9 @@
     <div class="btn-group">
       <div class="btn" onclick="toggleTimer()">Start</div>
       <div class="btn" onclick="resetTimer()">Reset</div>
+      <div class="btn" id="fullscreen" onclick="openFullscreen()">
+        Full screen
+      </div>
     </div>
 
     <div id="full-width">
