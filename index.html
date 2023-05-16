@@ -92,6 +92,8 @@
       var hour = 0;
       var selectedTime;
 
+      var playSoundSetting = true;
+
       function showNotification(message) {
         if (!("Notification" in window)) {
           alert("This browser does not support desktop notification");
@@ -103,6 +105,16 @@
               var notification = new Notification(message);
             }
           });
+        }
+      }
+
+      function toggleSoundSetting() {
+        if (playSoundSetting) {
+          playSoundSetting = false;
+          document.getElementById("soundSetting").innerText = "Play sound";
+        } else {
+          playSoundSetting = true;
+          document.getElementById("soundSetting").innerText = "Mute sound";
         }
       }
 
@@ -148,7 +160,7 @@
         clearInterval(timer);
         time = 0;
         setWatchValue(time);
-        document.getElementsByClassName("btn")[0].innerHTML = "Start";
+        document.getElementById("toggleTimer").innerHTML = "Start";
       }
 
       function setWatchValue(time) {
@@ -160,19 +172,28 @@
           hour + "hr : " + min + "m : " + sec + "s";
       }
 
+      function playAudio() {
+        if (playSoundSetting) {
+          var audio = new Audio("alert.mp3");
+          audio.play();
+        }
+      }
+
       function toggleTimer() {
         if (timerRunning) {
           timerRunning = !timerRunning;
           clearInterval(timer);
           showNotification("Timer paused");
-          document.getElementsByClassName("btn")[0].innerHTML = "Resume";
+          document.getElementById("toggleTimer").innerHTML = "Resume";
         } else {
           timerRunning = true;
-          document.getElementsByClassName("btn")[0].innerHTML = "Pause";
+          document.getElementById("toggleTimer").innerHTML = "Pause";
           if (time === 0) {
             showNotification("20 mins timer started");
+            playAudio();
           } else {
             showNotification("Timer resumed");
+            playAudio();
           }
           // selectedTime = document.getElementById('timer').value;
           timer = setInterval(() => {
@@ -182,6 +203,7 @@
               (time / 1200) * 100 + "%";
             if (min === 20) {
               showNotification("Hey Yash, times up!. Stare around for 20 secs");
+              playAudio();
               resetTimer();
               setTimeout(() => {
                 toggleTimer();
@@ -200,8 +222,11 @@
     </select> -->
 
     <div class="btn-group">
-      <div class="btn" onclick="toggleTimer()">Start</div>
-      <div class="btn" onclick="resetTimer()">Reset</div>
+      <div class="btn" id="toggleTimer" onclick="toggleTimer()">Start</div>
+      <div class="btn" id="resetTimer" onclick="resetTimer()">Reset</div>
+      <div class="btn" id="soundSetting" onclick="toggleSoundSetting()">
+        Mute sound
+      </div>
       <div class="btn" id="fullscreen" onclick="openFullscreen()">
         Full screen
       </div>
